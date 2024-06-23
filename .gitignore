@@ -1,8 +1,5 @@
 # __pycache__
 **/__pycache__/**
 
-# pyenv
-.python-version
-
-# driverlicense
-**/driver/LICENSE.chromedriver
+# venv
+**/.venv_entetubus/**
