@@ -2,9 +2,9 @@
 **/__pycache__/**
 
 # venv
-**/.venv_entetubus/Lib/site-packages/**
-**/.venv_entetubus/Scripts/**
-**/.venv_entetubus/**
+.venv_entetubus/Lib/site-packages/**
+.venv_entetubus/Scripts/**
+.venv_entetubus/**
 
 # pyenv
 .python-version
