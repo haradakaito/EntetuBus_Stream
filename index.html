@@ -27,14 +27,21 @@
 <body>
     <h1>バス時刻表</h1>
     <div>
-        <label for="from_station">出発駅:</label>
-        <input type="text" id="from_station" name="from_station">
-        <label for="to_station">到着駅:</label>
-        <input type="text" id="to_station" name="to_station">
+        <label for="from_station">乗車バス停:</label>
+        <select id="from_station" name="from_station">
+            <option value="0">乗車バス停を選択</option>
+        </select>
+        <label for="to_station">降車バス停:</label>
+        <select id="to_station" name="to_station">
+            <option value="0">降車バス停を選択</option>
+            <option selected="selected" value="浜松駅">浜松駅</option>
+        </select>
         <button onclick="displayBusData()">検索</button>
     </div>
 
     <div id="retrieval-time" style="margin-top: 20px;"></div>
+
+    <div id="no-bus-message" style="margin-top: 20px; color: red;"></div>
 
     <table id="bus-schedule">
         <thead>
@@ -56,7 +63,7 @@
             return data;
         }
 
-        async function preprocessedData(data) {
+        async function preprocessedBusTableData(data) {
             const ref_time = data[0]['取得日時'];
             const bus_timetable = data[0]['バス時刻表'];
             var bus_schedule = [];
@@ -66,10 +73,18 @@
             return {'取得日時': ref_time, 'バス時刻表': bus_schedule};
         }
 
+        // バスの運行状況を表示する
         async function displayBusData() {
             const data = await fetchBusSchedule();
-            const prepro_data = await preprocessedData(data);
+            if (data.length === 0 || !data[0]['バス時刻表'].length) {
+                document.getElementById("no-bus-message").textContent = "運行中のバスが見つかりませんでした";
+                document.getElementById("retrieval-time").textContent = '';
+                document.querySelector("#bus-schedule tbody").innerHTML = '';
+                return;
+            }
+            const prepro_data = await preprocessedBusTableData(data);
             document.getElementById("retrieval-time").textContent = `取得日時: ${prepro_data['取得日時']}`;
+            document.getElementById("no-bus-message").textContent = '';
             const tbody = document.querySelector("#bus-schedule tbody");
             tbody.innerHTML = ''; // 既存の行をクリア
             for (let i = 0; i < prepro_data['バス時刻表'].length; i++) {
@@ -83,6 +98,37 @@
                 tbody.appendChild(row);
             }
         }
+
+        async function fetchBusStop(erea) {
+            const url = `http://localhost:8000/busstop?erea=${erea}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            return data;
+        }
+
+        async function preprocessedBusStopData(data) {
+            return data[0];
+        }
+
+        // 乗車バス停の選択肢を追加
+        async function addOption() {
+            const erea_list = ['布橋', '城北'];
+            for (let i = 0; i < erea_list.length; i++) {
+                let data = await fetchBusStop(erea_list[i]);
+                data = await preprocessedBusStopData(data);
+                var select = document.getElementById('from_station');
+                for (let j = 0; j < data['バス停'].length; j++) {
+                    var option = document.createElement('option');
+                    option.setAttribute('value', data['バス停'][j]);
+                    option.textContent = data['バス停'][j];
+                    select.appendChild(option);
+                }
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            addOption();
+        });
     </script>
 </body>
 </html>
