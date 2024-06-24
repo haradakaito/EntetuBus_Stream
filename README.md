@@ -1,6 +1,9 @@
 # 遠鉄バスどこ!?（PC版）
 
 # 実行方法
-事前に，Python，およびChromeDriver.exeをダウンロードしてください  
+`GoogleDriver.exe`をダウンロード  
+Pythonパッケージをインストール  
 `$ bash install.sh`  
-`$ uvicorn main:app --reload`
+uvicornでmain.pyをローカルにデプロイ  
+`$ uvicorn main:app --reload`  
+`index.html`を開いて実行  
