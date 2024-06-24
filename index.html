@@ -36,7 +36,7 @@
             <option value="0">降車バス停を選択</option>
             <option selected="selected" value="浜松駅">浜松駅</option>
         </select>
-        <button onclick="displayBusData()">検索</button>
+        <button id="search-button" onclick="startUpdating()">検索</button>
     </div>
 
     <div id="retrieval-time" style="margin-top: 20px;"></div>
@@ -54,6 +54,8 @@
     </table>
 
     <script>
+        let updateInterval;
+
         async function fetchBusSchedule() {
             const fromStation = document.getElementById("from_station").value;
             const toStation = document.getElementById("to_station").value;
@@ -97,6 +99,11 @@
                 row.appendChild(locationCell);
                 tbody.appendChild(row);
             }
+        }
+
+        function startUpdating() {
+            displayBusData();
+            updateInterval = setInterval(displayBusData, 60000);
         }
 
         async function fetchBusStop(erea) {
