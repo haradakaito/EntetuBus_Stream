@@ -13,11 +13,11 @@ class GetBusTable:
         options.add_argument('--disable-gpu')
         options.add_argument('--window-size=1920,1200')
         options.add_argument('--log-level=3')  # INFO以上のログのみ表示
-        self.chrome_service = webdriver.ChromeService(executable_path='../driver/chromedriver.exe')
+        self.chrome_service = webdriver.ChromeService(executable_path='./driver/chromedriver.exe')
         self.chrome = webdriver.Chrome(service=self.chrome_service, options=options)
         self.chrome.get('https://info.entetsu.co.jp/navi/pc/annai.aspx')
 
-    def _get_bustable(self, from_station:str='浜松学院大学', to_station:str='浜松駅') -> dict:
+    def _get_bustable(self, from_station:str, to_station:str) -> list:
         # アクセスするURL
         url = self._get_bustable_url(from_station=from_station, to_station=to_station)
         if url == '':
@@ -47,7 +47,7 @@ class GetBusTable:
                 else:
                     bus_state.append(d)
             result['バス時刻表'] = bus_state
-            return result
+            return [result]
 
     # バス時刻表URLを取得する
     def _get_bustable_url(self, from_station:str, to_station:str) -> str:
