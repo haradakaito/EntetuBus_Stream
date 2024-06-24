@@ -1,18 +1,37 @@
 <!DOCTYPE html>
 <html lang="ja">
     <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>バス時刻表</title>
-        <script>
-            async function getBusTime() {
-                const from_station = document.getElementById('from_station').value;
-                const to_station = document.getElementById('to_station').value;
-                const response = await fetch('http://localhost:8000/?from_station='+from_station+'&to_station='+to_station);
-                const data = await response.json();
-                console.log(data);
-            }
-        </script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>バス時刻表</title>
+            <script>
+                async function getBusTime() {
+                    const from_station = document.getElementById('from_station').value;
+                    const to_station = document.getElementById('to_station').value;
+                    const response = await fetch('http://localhost:8000/?from_station=' + from_station + '&to_station=' + to_station);
+                    var data = await response.json();
+                    var data = preprocessedData(data);
+                    displayData(data);
+                }
+
+                function preprocessedData(data) {
+                    const gettime = data[0]['取得日時']
+                    var bustime = []
+                    for (let i=0; i<data[0]['バス時刻表'].length; i++) {
+                        bustime.push([data[0]['バス時刻表'][i]['到着予定'], data[0]['バス時刻表'][i]['現在地']]);
+                    }
+                    return {'取得時刻': gettime, 'バス運行状況': bustime}
+                }
+
+                function displayData(data) {
+                    const resultDiv = document.getElementById('result');
+                    resultDiv.innerHTML = '';
+
+                    const Element = document.createElement('p');
+                    Element.innerText = `取得時刻: ${data['取得時刻']}`;
+                    resultDiv.appendChild(Element);
+                    }
+            </script>
     </head>
     <body>
         <h1>バス時刻表</h1>
@@ -24,5 +43,6 @@
         <input type="text" id="to_station" name="to_station">
         <br>
         <button onclick="getBusTime()">検索</button>
+        <div id="result"></div>
     </body>
 </html>
