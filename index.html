@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>遠鉄バスどこ!?</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e8f0f2;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+        .form-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .form-group > div {
+            flex: 1;
+            min-width: 200px;
+            margin: 5px;
+        }
+        label {
+            font-size: 1.1em;
+            color: #555;
+            margin-right: 10px;
+            display: block;
+        }
+        select, button {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        select:focus, button:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+        }
+        button {
+            width: auto;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            cursor: pointer;
+            padding: 10px 20px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        button i {
+            margin-right: 5px;
+        }
+        #loading-container {
+            text-align: center;
+        }
+        #loading {
+            display: none;
+            text-align: center;
+            font-size: 1.5em;
+            color: #007bff;
+        }
+        #retrieval-time, #no-bus-message {
+            text-align: center;
+            font-size: 1.1em;
+            margin-top: 20px;
+        }
+        #no-bus-message {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            display: none;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            transition: background-color 0.3s ease;
+        }
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #e9ecef;
+        }
+        #initial-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            z-index: 1000;
+            font-size: 2em;
+            color: #007bff;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        .loading-title {
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: #007bff;
+            text-align: center;
+            font-weight: bold;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="initial-loading">
+        <div class="spinner"></div>
+        <div class="loading-title">遠鉄バスどこ!?</div>
+    </div>
+    <div class="container" style="display: none;">
+        <h1><i class="fas fa-bus"></i> バス時刻表</h1>
+        <div class="form-group">
+            <div>
+                <label for="from_station">乗車バス停:</label>
+                <select id="from_station" name="from_station">
+                    <option value="0">乗車バス停を選択</option>
+                </select>
+            </div>
+            <div>
+                <label for="to_station">降車バス停:</label>
+                <select id="to_station" name="to_station">
+                    <option value="0">降車バス停を選択</option>
+                    <option selected="selected" value="浜松駅">浜松駅</option>
+                </select>
+            </div>
+        </div>
+        <div id="loading-container">
+            <button id="search-button" onclick="startUpdating()"><i class="fas fa-search"></i> 検索</button>
+            <div id="loading"><i class="fas fa-spinner fa-spin"></i> 検索中...</div>
+        </div>
+        <div id="retrieval-time"></div>
+        <div id="no-bus-message" style="color: red;"></div>
+
+        <table id="bus-schedule">
+            <thead>
+                <tr>
+                    <th>到着予定</th>
+                    <th>現在地</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        let updateInterval;
+
+        async function fetchBusSchedule() {
+            const fromStation = document.getElementById("from_station").value;
+            const toStation = document.getElementById("to_station").value;
+            const url = `http://localhost:8000/latest?from_station=${fromStation}&to_station=${toStation}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            return data;
+        }
+
+        async function preprocessedBusTableData(data) {
+            const ref_time = data[0]['取得日時'];
+            const bus_timetable = data[0]['バス時刻表'];
+            var bus_schedule = [];
+            for (let i = 0; i < bus_timetable.length; i++) {
+                bus_schedule.push([bus_timetable[i]['到着予定'], bus_timetable[i]['現在地']]);
+            }
+            return {'取得日時': ref_time, 'バス時刻表': bus_schedule};
+        }
+
+        async function displayBusData() {
+            const searchButton = document.getElementById("search-button");
+            const loading = document.getElementById("loading");
+            const table = document.getElementById("bus-schedule");
+            searchButton.style.display = "none";
+            loading.style.display = "block";
+            table.style.display = "none";
+
+            const data = await fetchBusSchedule();
+
+            searchButton.style.display = "block";
+            searchButton.style.margin = "auto";
+            loading.style.display = "none";
+
+            if (data.length === 0 || !data[0]['バス時刻表'].length) {
+                document.getElementById("no-bus-message").textContent = "運行中のバスが見つかりませんでした";
+                document.getElementById("retrieval-time").textContent = '';
+                document.querySelector("#bus-schedule tbody").innerHTML = '';
+                return;
+            }
+            const prepro_data = await preprocessedBusTableData(data);
+            document.getElementById("retrieval-time").textContent = `取得日時: ${prepro_data['取得日時']}`;
+            document.getElementById("no-bus-message").textContent = '';
+            const tbody = document.querySelector("#bus-schedule tbody");
+            tbody.innerHTML = '';
+            for (let i = 0; i < prepro_data['バス時刻表'].length; i++) {
+                const row = document.createElement("tr");
+                const arrivalCell = document.createElement("td");
+                const locationCell = document.createElement("td");
+                arrivalCell.textContent = prepro_data['バス時刻表'][i][0];
+                locationCell.textContent = prepro_data['バス時刻表'][i][1];
+                row.appendChild(arrivalCell);
+                row.appendChild(locationCell);
+                tbody.appendChild(row);
+            }
+            table.style.display = "table"; // データ取得後に表示
+        }
+
+        function startUpdating() {
+            displayBusData();
+            updateInterval = setInterval(displayBusData, 60000);
+        }
+
+        async function fetchBusStop(erea) {
+            const url = `http://localhost:8000/busstop?erea=${erea}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            return data;
+        }
+
+        async function preprocessedBusStopData(data) {
+            return data[0];
+        }
+
+        async function addOption() {
+            const erea_list = ['布橋', '城北'];
+            for (let i = 0; i < erea_list.length; i++) {
+                let data = await fetchBusStop(erea_list[i]);
+                data = await preprocessedBusStopData(data);
+                var select = document.getElementById('from_station');
+                for (let j = 0; j < data['バス停'].length; j++) {
+                    var option = document.createElement('option');
+                    option.setAttribute('value', data['バス停'][j]);
+                    option.textContent = data['バス停'][j];
+                    select.appendChild(option);
+                }
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            await addOption();
+            document.getElementById("initial-loading").style.display = "none";
+            document.querySelector(".container").style.display = "block";
+        });
+    </script>
+</body>
+</html>
