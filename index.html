@@ -1,48 +1,88 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>バス時刻表</title>
-            <script>
-                async function getBusTime() {
-                    const from_station = document.getElementById('from_station').value;
-                    const to_station = document.getElementById('to_station').value;
-                    const response = await fetch('http://localhost:8000/?from_station=' + from_station + '&to_station=' + to_station);
-                    var data = await response.json();
-                    var data = preprocessedData(data);
-                    displayData(data);
-                }
-
-                function preprocessedData(data) {
-                    const gettime = data[0]['取得日時']
-                    var bustime = []
-                    for (let i=0; i<data[0]['バス時刻表'].length; i++) {
-                        bustime.push([data[0]['バス時刻表'][i]['到着予定'], data[0]['バス時刻表'][i]['現在地']]);
-                    }
-                    return {'取得時刻': gettime, 'バス運行状況': bustime}
-                }
-
-                function displayData(data) {
-                    const resultDiv = document.getElementById('result');
-                    resultDiv.innerHTML = '';
-
-                    const Element = document.createElement('p');
-                    Element.innerText = `取得時刻: ${data['取得時刻']}`;
-                    resultDiv.appendChild(Element);
-                    }
-            </script>
-    </head>
-    <body>
-        <h1>バス時刻表</h1>
-        <p>以下のボタンをクリックすると、バスの時刻表を取得します。</p>
-        <label for="from_station">乗車バス停:</label>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>バス時刻表</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>バス時刻表</h1>
+    <div>
+        <label for="from_station">出発駅:</label>
         <input type="text" id="from_station" name="from_station">
-        <br>
-        <label for="to_station">降車バス停:</label>
+        <label for="to_station">到着駅:</label>
         <input type="text" id="to_station" name="to_station">
-        <br>
-        <button onclick="getBusTime()">検索</button>
-        <div id="result"></div>
-    </body>
+        <button onclick="displayBusData()">検索</button>
+    </div>
+
+    <div id="retrieval-time" style="margin-top: 20px;"></div>
+
+    <table id="bus-schedule">
+        <thead>
+            <tr>
+                <th>到着予定</th>
+                <th>現在地</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        async function fetchBusSchedule() {
+            const fromStation = document.getElementById("from_station").value;
+            const toStation = document.getElementById("to_station").value;
+            const url = `http://localhost:8000?from_station=${fromStation}&to_station=${toStation}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            return data;
+        }
+
+        async function preprocessedData(data) {
+            const ref_time = data[0]['取得日時'];
+            const bus_timetable = data[0]['バス時刻表'];
+            var bus_schedule = [];
+            for (let i = 0; i < bus_timetable.length; i++) {
+                bus_schedule.push([bus_timetable[i]['到着予定'], bus_timetable[i]['現在地']]);
+            }
+            return {'取得日時': ref_time, 'バス時刻表': bus_schedule};
+        }
+
+        async function displayBusData() {
+            const data = await fetchBusSchedule();
+            const prepro_data = await preprocessedData(data);
+            document.getElementById("retrieval-time").textContent = `取得日時: ${prepro_data['取得日時']}`;
+            const tbody = document.querySelector("#bus-schedule tbody");
+            tbody.innerHTML = ''; // 既存の行をクリア
+            for (let i = 0; i < prepro_data['バス時刻表'].length; i++) {
+                const row = document.createElement("tr");
+                const arrivalCell = document.createElement("td");
+                const locationCell = document.createElement("td");
+                arrivalCell.textContent = prepro_data['バス時刻表'][i][0];
+                locationCell.textContent = prepro_data['バス時刻表'][i][1];
+                row.appendChild(arrivalCell);
+                row.appendChild(locationCell);
+                tbody.appendChild(row);
+            }
+        }
+    </script>
+</body>
 </html>
