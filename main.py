@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from _getbustable import GetBusTable
+from _getbusstop import GetBusStop
 from starlette.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -11,12 +12,22 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-@app.get("/")
+@app.get("/latest")
 # バス時刻表を取得
 def read_bustable(from_station:str, to_station:str):
     try:
         getbustable = GetBusTable()
-        result = getbustable._get_bustable(from_station, to_station)
+        result = getbustable.get_bustable(from_station=from_station, to_station=to_station)
+        return result
+    except:
+        return None
+
+@app.get("/busstop")
+# バス停
+def read_busstop(erea:str):
+    try:
+        getbusstop = GetBusStop()
+        result = [getbusstop.get_busstop(erea=erea)]
         return result
     except:
         return None

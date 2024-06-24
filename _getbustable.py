@@ -16,7 +16,7 @@ class GetBusTable:
         self.chrome = webdriver.Chrome(service=self.chrome_service, options=options)
         self.chrome.get('https://info.entetsu.co.jp/navi/pc/annai.aspx')
 
-    def _get_bustable(self, from_station:str, to_station:str) -> list:
+    def get_bustable(self, from_station:str, to_station:str) -> list:
         # アクセスするURL
         url = self._get_bustable_url(from_station=from_station, to_station=to_station)
         result = {'取得日時':datetime.now().strftime('%Y/%m/%d %H:%M:%S')}
@@ -47,7 +47,6 @@ class GetBusTable:
 
     # バス時刻表URLを取得する
     def _get_bustable_url(self, from_station:str, to_station:str) -> str:
-        current_url = ''
         # 浜松学院大学から浜松駅まででバス停検索する
         bus_station_info = {'from': from_station, 'to': to_station}
         input_from_element = self.chrome.find_element(By.ID, 'ctl00_ContentPlaceHolder2_TBusFrom')

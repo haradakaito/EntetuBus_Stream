@@ -50,7 +50,7 @@
         async function fetchBusSchedule() {
             const fromStation = document.getElementById("from_station").value;
             const toStation = document.getElementById("to_station").value;
-            const url = `http://localhost:8000?from_station=${fromStation}&to_station=${toStation}`;
+            const url = `http://localhost:8000/latest?from_station=${fromStation}&to_station=${toStation}`;
             const response = await fetch(url);
             const data = await response.json();
             return data;
