@@ -1,0 +1,16 @@
+# __pycache__
+__pycache__/**
+
+# venv
+.venv_entetubus/Lib/site-packages/**
+.venv_entetubus/Scripts/**
+.venv_entetubus/**
+
+# python-version
+.python-version
+
+# document
+**/document/**
+
+# driver
+**/driver/**
