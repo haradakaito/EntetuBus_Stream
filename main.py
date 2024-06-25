@@ -14,6 +14,11 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
+@app.get("/")
+# ヘルスチェック
+def read_root():
+    return {"Message": "Hello Entetsu Bus Stream API!"}
+
 @app.get("/latest")
 # バス時刻表を取得
 def read_bustable(from_station:str, to_station:str):
