@@ -13,7 +13,7 @@ class GetBusStop:
         options.add_argument('--disable-gpu')
         options.add_argument('--window-size=1920,1200')
         options.add_argument('--log-level=3')  # INFO以上のログのみ表示
-        os.chmod('/path/to/chromedriver', 755)
+        os.chmod('chromedriver.exe', 755)
         self.chrome_service = webdriver.ChromeService(executable_path='chromedriver.exe')
         self.chrome = webdriver.Chrome(service=self.chrome_service, options=options)
         self.chrome.get('https://www.navitime.co.jp/bus/diagram/busstop/22138/00001037/?name=') # 静岡県 浜松市中央区 全域
