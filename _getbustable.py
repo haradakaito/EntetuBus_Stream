@@ -13,7 +13,7 @@ class GetBusTable:
         options.add_argument('--disable-gpu')
         options.add_argument('--window-size=1920,1200')
         options.add_argument('--log-level=3')  # INFO以上のログのみ表示
-        os.chmod('./chromedriver.exe', 0755)
+        os.chmod('chromedriver.exe', 0o755)
         self.chrome_service = webdriver.ChromeService(executable_path='chromedriver.exe')
         self.chrome = webdriver.Chrome(service=self.chrome_service, options=options)
         self.chrome.get('https://info.entetsu.co.jp/navi/pc/annai.aspx')
