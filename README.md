@@ -7,6 +7,9 @@
 公式のホームページに行くと，PCでも一応確認できるページがあるみたいだが，そこまでいくのになかなかのステップが必要だった．  
 今回は，遠鉄バスどこ！？のPC版（仮）を作ってみました．
 
+# サンプル映像
+![サンプル映像](https://github.com/haradakaito/EntetuBus_Stream/assets/75819611/d894e801-00cd-4206-93b3-6e64f152aaaf)
+
 # 実行方法
 `GoogleDriver.exe`をダウンロード  
 
