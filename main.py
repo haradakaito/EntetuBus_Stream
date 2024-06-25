@@ -17,22 +17,16 @@ app.add_middleware(
 @app.get("/latest")
 # バス時刻表を取得
 def read_bustable(from_station:str, to_station:str):
-    try:
-        getbustable = GetBusTable()
-        result = getbustable.get_bustable(from_station=from_station, to_station=to_station)
-        return result
-    except:
-        return None
+    getbustable = GetBusTable()
+    result = getbustable.get_bustable(from_station=from_station, to_station=to_station)
+    return result
 
 @app.get("/busstop")
 # バス停
 def read_busstop(erea:str):
-    try:
-        getbusstop = GetBusStop()
-        result = [getbusstop.get_busstop(erea=erea)]
-        return result
-    except:
-        return None
+    getbusstop = GetBusStop()
+    result = [getbusstop.get_busstop(erea=erea)]
+    return result
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

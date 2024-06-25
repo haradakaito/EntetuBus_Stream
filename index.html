@@ -203,7 +203,7 @@
         async function fetchBusSchedule() {
             const fromStation = document.getElementById("from_station").value;
             const toStation = document.getElementById("to_station").value;
-            const url = `http://127.0.0.1:8000/latest?from_station=${fromStation}&to_station=${toStation}`;
+            const url = `https://entetubusstream-production.up.railway.app/latest?from_station=${fromStation}&to_station=${toStation}`;
             const response = await fetch(url);
             const data = await response.json();
             return data;
@@ -263,7 +263,7 @@
         }
 
         async function fetchBusStop(erea) {
-            const url = `http://127.0.0.1:8000/busstop?erea=${erea}`;
+            const url = `https://entetubusstream-production.up.railway.app/busstop?erea=${erea}`;
             const response = await fetch(url);
             const data = await response.json();
             return data;
