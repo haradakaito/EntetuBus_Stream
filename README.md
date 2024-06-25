@@ -7,6 +7,9 @@
 公式のホームページに行くと，PCでも一応確認できるページがあるみたいだが，そこまでいくのになかなかのステップが必要だった．  
 今回は，遠鉄バスどこ！？のPC版（仮）を作ってみました．
 
+# サンプル映像
+![サンプル映像](https://github.com/haradakaito/EntetuBus_Stream/assets/75819611/d894e801-00cd-4206-93b3-6e64f152aaaf)
+
 # 実行方法
 `GoogleDriver.exe`をダウンロード  
 
@@ -17,3 +20,8 @@ uvicornでmain.pyをローカルにデプロイ
 `$ uvicorn main:app --reload`  
 
 `index.html`を開いて実行  
+
+# 仕様
+- 布橋/城北地域におけるバス停～浜松駅までのバス運行状況を取得可能
+- 運行状況は1分毎に更新
+- 参照元は遠鉄バス公式HPおよび，NAVITIME公式HP
