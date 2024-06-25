@@ -20,3 +20,8 @@ uvicornでmain.pyをローカルにデプロイ
 `$ uvicorn main:app --reload`  
 
 `index.html`を開いて実行  
+
+# 仕様
+- 布橋/城北地域におけるバス停～浜松駅までのバス運行状況を取得可能
+- 運行状況は1分毎に更新
+- 参照元は遠鉄バス公式HPおよび，NAVITIME公式HP
