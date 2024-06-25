@@ -7,5 +7,6 @@ pip install beautifulsoup4==4.12.3
 pip install selenium==4.22.0
 pip install fastapi==0.111.0
 pip install "uvicorn[standard]"
+pip install webdriver_manager==4.0.1
 
 echo "== Installation Complete!! =="
