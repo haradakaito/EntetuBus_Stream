@@ -6,9 +6,6 @@ __pycache__/**
 .venv_entetubus/Scripts/**
 .venv_entetubus/**
 
-# driver
-**/driver/**
-
 # python-version
 .python-version
 
