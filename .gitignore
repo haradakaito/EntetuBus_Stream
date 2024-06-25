@@ -11,3 +11,6 @@ __pycache__/**
 
 # python-version
 .python-version
+
+# document
+**/document/**
