@@ -19,6 +19,7 @@ class GetBusStop:
         options.add_experimental_option("prefs", prefs)
         self.chrome = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         self.chrome.get('https://www.navitime.co.jp/bus/diagram/busstop/22138/00001037/?name=') # 静岡県 浜松市中央区 全域
+        print('OK')
 
     # 任意のエリアのバス停の情報を取得する
     def get_busstop(self, erea:str) -> list:
