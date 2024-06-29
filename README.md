@@ -10,6 +10,9 @@
 # サンプル映像
 ![サンプル映像](https://github.com/haradakaito/EntetuBus_Stream/assets/75819611/d894e801-00cd-4206-93b3-6e64f152aaaf)
 
+# システム概要図
+![システム概要図](https://github.com/haradakaito/EntetuBus_Stream/assets/75819611/188b0610-b04d-43b5-9d09-71801c509cbf)
+
 # 実行方法
 `GoogleDriver.exe`をダウンロード  
 
