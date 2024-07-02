@@ -44,7 +44,3 @@ class GetBusStop:
 
         driver = selenium.webdriver.Chrome(options=options)
         return driver
-
-if __name__ == '__main__':
-    getbusstop = GetBusStop()
-    print(getbusstop.get_busstop('布橋'))
