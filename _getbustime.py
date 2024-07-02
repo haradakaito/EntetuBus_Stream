@@ -1,13 +1,13 @@
-import pyvirtualdisplay
+# import pyvirtualdisplay
 import selenium
 from selenium.webdriver.common.by import By
 from datetime import datetime
 
 class GetBusTime:
     def get_bustime(self, bus_from:str, bus_to:str) -> list:
-        # 仮想ディスプレイの設定
-        display = pyvirtualdisplay.Display(visible=0, size=(1024, 768))
-        display.start()
+        # # 仮想ディスプレイの設定
+        # display = pyvirtualdisplay.Display(visible=0, size=(1024, 768))
+        # display.start()
         # ドライバの取得，URLにアクセス
         driver = self._start_webdriver()
         driver.get('https://info.entetsu.co.jp/navi/pc/annai.aspx')
@@ -31,8 +31,7 @@ class GetBusTime:
         result['bustime'] = tmp
         # ドライバ，ディスプレイを終了
         driver.quit()
-        display.stop()
-        print(result)
+        # display.stop()
         return [result]
 
     def _start_webdriver(self):
