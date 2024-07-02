@@ -1,22 +1,33 @@
 import selenium
 from selenium.webdriver.common.by import By
-import re
+from datetime import datetime
 
-class GetBusStop:
-    def get_busstop(self, erea:str) -> list:
+class GetBusTime:
+    def get_bustime(self, bus_from:str, bus_to:str) -> list:
         # ドライバの取得，URLにアクセス
         driver = self._start_webdriver()
-        driver.get('https://www.navitime.co.jp/bus/diagram/busstop/22138/00001037/?name=') # 静岡県 浜松市中央区 全域
-        # 指定した地域のバス停一覧を取得
-        driver.find_element(By.ID, 'address-level-3').send_keys(erea)
-        driver.find_element(By.ID, 'submit_busstop_search').click()
-        elements = driver.find_elements(By.CSS_SELECTOR, '.node-list a')
-        # バス停一覧を整形して保存
+        driver.get('https://info.entetsu.co.jp/navi/pc/annai.aspx')
+        # バス時刻表を取得
+        driver.find_element(By.ID, 'ctl00_ContentPlaceHolder2_TBusFrom').send_keys(bus_from)
+        driver.find_element(By.ID, 'ctl00_ContentPlaceHolder2_TBusTo').send_keys(bus_to)
+        driver.find_element(By.ID, 'ctl00_ContentPlaceHolder2_BtnSearch').click()
+        driver.find_element(By.ID, 'ctl00_ContentPlaceHolder2_BtnResult').click()
+        driver.find_element(By.ID, 'ctl00_ContentPlaceHolder2_LinkBusdokoFrom').click()
+        driver.switch_to.window(driver.window_handles[1])
+        # 取得日時を保存
         result = {}
-        busstops = [re.sub(r'\(.*?\)', '', element.text) for element in elements]
-        result['busstops'] = busstops
+        result['gettime'] = datetime.now().strftime('%Y/%m/%d %H:%M')
+        # 運行状況を取得
+        rows = driver.find_elements(By.XPATH, '//tbody/tr')
+        tmp = []
+        for row in rows:
+            cells = row.find_elements(By.TAG_NAME, 'td')
+            if cells[2].text != '通過':
+                tmp.append([cells[1].text, cells[2].text])
+        result['bustime'] = tmp
         # ドライバを閉じる
         driver.quit()
+        print(result)
         return [result]
 
     def _start_webdriver(self):

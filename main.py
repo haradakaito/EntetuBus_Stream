@@ -1,7 +1,5 @@
-import uvicorn
-
 from fastapi import FastAPI
-from _getbustable import GetBusTable
+from _getbustime import GetBusTime
 from _getbusstop import GetBusStop
 from starlette.middleware.cors import CORSMiddleware
 
@@ -14,30 +12,28 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-@app.get("/")
+getbustime = GetBusTime()
+getbusstop = GetBusStop()
+
 # ヘルスチェック
+@app.get("/")
 def read_root():
     return {"Message": "Hello Entetsu Bus Stream API!"}
 
-@app.get("/latest")
 # バス時刻表を取得
-def read_bustable(from_station:str, to_station:str):
+@app.get("/bustime")
+def read_bustable(bus_from:str, bus_to:str) -> list:
     try:
-        getbustable = GetBusTable()
-        result = getbustable.get_bustable(from_station=from_station, to_station=to_station)
+        result = getbustime.get_bustime(bus_from=bus_from, bus_to=bus_to)
         return result
     except Exception as e:
         return({"error": str(e)})
 
+# バス停一覧を取得
 @app.get("/busstop")
-# バス停
 def read_busstop(erea:str):
     try:
-        getbusstop = GetBusStop()
-        result = [getbusstop.get_busstop(erea=erea)]
+        result = getbusstop.get_busstop(erea=erea)
         return result
     except Exception as e:
         return({"error": str(e)})
-
-# if __name__ == "__main__":
-#     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
