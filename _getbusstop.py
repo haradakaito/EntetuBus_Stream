@@ -1,9 +1,13 @@
+import pyvirtualdisplay
+import re
 import selenium
 from selenium.webdriver.common.by import By
-import re
 
 class GetBusStop:
     def get_busstop(self, erea:str) -> list:
+        # 仮想ディスプレイの設定
+        display = pyvirtualdisplay.Display(visible=0, size=(1024, 768))
+        display.start()
         # ドライバの取得，URLにアクセス
         driver = self._start_webdriver()
         driver.get('https://www.navitime.co.jp/bus/diagram/busstop/22138/00001037/?name=') # 静岡県 浜松市中央区 全域
@@ -15,8 +19,9 @@ class GetBusStop:
         result = {}
         busstops = [re.sub(r'\(.*?\)', '', element.text) for element in elements]
         result['busstops'] = busstops
-        # ドライバを閉じる
+        # ドライバ，ディスプレイを終了
         driver.quit()
+        display.stop()
         return [result]
 
     def _start_webdriver(self):

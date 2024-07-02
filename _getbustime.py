@@ -1,9 +1,13 @@
+import pyvirtualdisplay
 import selenium
 from selenium.webdriver.common.by import By
 from datetime import datetime
 
 class GetBusTime:
     def get_bustime(self, bus_from:str, bus_to:str) -> list:
+        # 仮想ディスプレイの設定
+        display = pyvirtualdisplay.Display(visible=0, size=(1024, 768))
+        display.start()
         # ドライバの取得，URLにアクセス
         driver = self._start_webdriver()
         driver.get('https://info.entetsu.co.jp/navi/pc/annai.aspx')
@@ -25,8 +29,9 @@ class GetBusTime:
             if cells[2].text != '通過':
                 tmp.append([cells[1].text, cells[2].text])
         result['bustime'] = tmp
-        # ドライバを閉じる
+        # ドライバ，ディスプレイを終了
         driver.quit()
+        display.stop()
         print(result)
         return [result]
 
