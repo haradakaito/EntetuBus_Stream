@@ -11,8 +11,6 @@
 ※現在，Koyebデプロイを中断していますので，使用できません．．
 
 # サンプル画像・映像
-![スクリーンショット 2024-07-03 013207](https://github.com/haradakaito/EntetuBus_Stream/assets/75819611/aa4bd54e-d8ea-4d40-bb86-5c55359ed6a3)
-
 ![サンプル映像](https://github.com/haradakaito/EntetuBus_Stream/assets/75819611/d894e801-00cd-4206-93b3-6e64f152aaaf)
 
 - ライトモードとダークモードの切り替えが可能
