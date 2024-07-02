@@ -21,4 +21,4 @@
 
 リニューアルのお知らせ（遠鉄バス公式）：https://bus.entetsu.co.jp/search/basudokorenewal.html
 
-リニューアル後の遠鉄バスどこ（遠鉄バス公式）https://transfer-cloud.navitime.biz/entetsu?feature=busApproaching
+リニューアル後の遠鉄バスどこ（遠鉄バス公式）：https://transfer-cloud.navitime.biz/entetsu?feature=busApproaching
