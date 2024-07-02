@@ -19,6 +19,6 @@
 # 2024/7/2 更新
 先日7月1日に，遠鉄バスの公式HPがリニューアルされており，はるかに使いやすく遠鉄バスどこ！？のPC版が作成されていました．．．（少し複雑な気持ち）
 
-https://bus.entetsu.co.jp/search/basudokorenewal.html
+リニューアルのお知らせ（遠鉄バス公式）：https://bus.entetsu.co.jp/search/basudokorenewal.html
 
-https://transfer-cloud.navitime.biz/entetsu?feature=busApproaching
+リニューアル後の遠鉄バスどこ（遠鉄バス公式）https://transfer-cloud.navitime.biz/entetsu?feature=busApproaching
