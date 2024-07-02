@@ -15,3 +15,10 @@
 
 # システム概要図
 ![システム概要図](https://github.com/haradakaito/EntetuBus_Stream/assets/75819611/188b0610-b04d-43b5-9d09-71801c509cbf)
+
+# 2024/7/2 更新
+先日7月1日に，遠鉄バスの公式HPがリニューアルされており，はるかに使いやすく遠鉄バスどこ！？のPC版が作成されていました．．．（少し複雑な気持ち）
+
+https://bus.entetsu.co.jp/search/basudokorenewal.html
+
+https://transfer-cloud.navitime.biz/entetsu?feature=busApproaching
