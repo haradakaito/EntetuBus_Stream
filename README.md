@@ -10,8 +10,14 @@
 実行方法は，index.htmlをクリックするだけ！  
 ※現在，Koyebデプロイを中断していますので，使用できません．．
 
-# サンプル映像
+# サンプル画像・映像
+![スクリーンショット 2024-07-03 013207](https://github.com/haradakaito/EntetuBus_Stream/assets/75819611/aa4bd54e-d8ea-4d40-bb86-5c55359ed6a3)
+
 ![サンプル映像](https://github.com/haradakaito/EntetuBus_Stream/assets/75819611/d894e801-00cd-4206-93b3-6e64f152aaaf)
+
+- ライトモードとダークモードの切り替えが可能
+
+![サンプル映像_ダークモード](https://github.com/haradakaito/EntetuBus_Stream/assets/75819611/898f7031-87be-4282-8089-b5057865c674)
 
 # システム概要図
 ![システム概要図](https://github.com/haradakaito/EntetuBus_Stream/assets/75819611/188b0610-b04d-43b5-9d09-71801c509cbf)
