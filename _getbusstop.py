@@ -28,9 +28,7 @@ class GetBusStop:
         # ドライバの設定
         options = selenium.webdriver.ChromeOptions()
         options.add_argument('--headless')
-        options.add_argument('--disable-gpu')
         options.add_argument('--disable-extensions')
-        options.add_argument('--single-process')
         options.add_argument('--proxy-server="direct://"')
         options.add_argument('--proxy-bypass-list=*')
         options.add_argument('--blink-settings=imagesEnabled=false')
